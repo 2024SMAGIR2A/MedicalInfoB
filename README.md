@@ -15,3 +15,10 @@ L’application devra etre capable :
 * Une application web
 * Un guide utilisateur pour l’application
 
+### Membre de l'équipe
+* ASSOUMAN ELLOH
+* KOFFI ULRICH
+* KOFFI HUGES
+* KOFFI GUSTAVE
+* GABA PAUL
+
