@@ -22,3 +22,7 @@ L’application devra etre capable :
 * KOFFI GUSTAVE
 * GABA PAUL
 
+### Lien de modélisation
+* ASSOUMAN ELLOH
+
+https://lucid.app/lucidchart/cab51428-01a0-4a3a-ab2c-8cba27c5c491/edit?viewport_loc=-1432%2C-1624%2C5450%2C2669%2C0_0&invitationId=inv_9e8c0c18-2469-4a46-962f-4d1874bcc94c
