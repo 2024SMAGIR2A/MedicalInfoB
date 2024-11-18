@@ -17,8 +17,8 @@ L’application devra etre capable :
 
 ### Membre de l'équipe
 * ASSOUMAN ELLOH
+* AGOSSADOU HUGUES
 * KOFFI ULRICH
-* KOFFI HUGES
 * KOFFI GUSTAVE
 * GABA PAUL
 
