@@ -24,3 +24,5 @@ L’application devra etre capable :
 
 ### Lien de modélisation
 * https://www.mermaidchart.com/raw/bd39f9fc-7b4d-4695-a08b-74688c491ec0?theme=light&version=v0.1&format=svg
+
+* https://dbdiagram.io/d/674e00a9e9daa85aca68563d
