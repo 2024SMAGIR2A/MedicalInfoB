@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Constants\GlobalConst;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-
+use App\Http\Services\Api\AuthService;
 use App\Http\Services\UserService;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -32,11 +32,14 @@ class AuthController extends Controller
     public $errorResponse;
     private $userService;
 
+    private AuthService $authService;
+
     public function __construct(UserService $userService)
     {
         $this->successResponse = null;
         $this->errorResponse = null;
         $this->userService = $userService;
+        $this->authService = new AuthService();
 
     }
 
@@ -90,7 +93,7 @@ class AuthController extends Controller
      *         response=422,
      *         description="Validation échouée",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Veuillez remplir tous les champs."),
+     *             @OA\Property(property="message", type="array", example=["Veuillez remplir tous les champs."]),
      *             @OA\Property(property="code", type="string", example="INVALIDE CREDENTIALS"),
      *             @OA\Property(property="status", type="integer", example=422)
      *         )
@@ -124,72 +127,27 @@ class AuthController extends Controller
             'password.required' => 'Le mot de passe est requis.',
         ]);
 
-        try {
 
-            // erreur de validation
-            if ($validator->fails()) {
+        // erreur de validation
+        if ($validator->fails()) {
 
-                $errorDetail = 'Veuillez remplir tous les champs.';
+            $errorDetail = $validator->errors()->messages();
 
-                return ApiResponse::return_error_response(ApiResponse::INVALID_CREDENTIALS, $errorDetail, 422);
-
-            }
-
-            // mettre l'email en minuscule
-            $email = strtolower($request->email);
-
-            // Récupérer l'utilisateur par email
-            $user = User::where('email', $email)->first();
-
-            // Vérifier si l'utilisateur existe
-            if (!$user) {
-
-                $errorDetail = 'Aucun utilisateur trouvé';
-
-                return ApiResponse::return_error_response(ApiResponse::INVALID_CREDENTIALS, $errorDetail, 404);
-
-            }
-
-            // Vérifier si le mot de passe correspond
-            if (!Hash::check($request->password, $user->password)) {
-
-                $message = ApiResponse::INVALID_CREDENTIALS;
-                $errorDetail = 'Aucun utilisateur trouvé';
-
-                return ApiResponse::return_error_response(ApiResponse::INVALID_CREDENTIALS, $errorDetail, 401);
-
-            }
-
-            // Authentification réussie, générer le token JWT
-            $token = $user->createToken('accessToken')->plainTextToken;
-
-            // set last_login avec la date et l'heure actuelles
-            $user->userLogs()->create([
-                'ip' => $request->ip(),
-                'action' => GlobalConst::ACTION_LOGIN,
-            ]);
-
-            $data = [
-                'accessToken' => $token
-            ];
-
-
-            $message = ApiResponse::ACCEPTED;
-
-            return ApiResponse::return_success_response($message, $data, 200);
-
-
-
-        } catch (\Throwable $th) {
-
-            // Gérer les éventuelles erreurs
-            Log::error('Error occured when user tried to login. ' . $th->getMessage());
-
-            return ApiResponse::return_server_error_response();
+            return ApiResponse::return_error_response(ApiResponse::INVALID_CREDENTIALS, $errorDetail, 422);
 
         }
 
 
+        $userLoginData = [
+            'email' => $request->email,
+            'password' => $request->password,
+            'ip'    => $request->ip()
+        ];
+
+        $result = $this->authService->login($userLoginData);
+
+
+        return $result;
     }
 
        /**
@@ -305,30 +263,30 @@ class AuthController extends Controller
      *    )
      *    )
     */
-    public function logout(Request $request){
-        try {
-            // Récupérer l'utilisateur actuellement authentifié
-            $user = auth()->user();
+    // public function logout(Request $request){
+    //     try {
+    //         // Récupérer l'utilisateur actuellement authentifié
+    //         $user = auth()->user();
 
-            // Mettre à jour le champ last_logout avec la date et l'heure actuelles
-            $user->userLogs()->create([
-                'action' => GlobalConst::ACTION_LOGOUT,
-                'ip' => $request->ip(),
-            ]);
+    //         // Mettre à jour le champ last_logout avec la date et l'heure actuelles
+    //         // $user->userLogs()->create([
+    //         //     'action' => GlobalConst::ACTION_LOGOUT,
+    //         //     'ip' => $request->ip(),
+    //         // ]);
 
-            // Révoquer tous les jetons d'authentification associés à l'utilisateur
-            $user->tokens()->delete();
+    //         // Révoquer tous les jetons d'authentification associés à l'utilisateur
+    //         $user->tokens()->delete();
 
-            $message = ApiResponse::OK;
-            return ApiResponse::return_success_response($message, null, 202);
+    //         $message = ApiResponse::OK;
+    //         return ApiResponse::return_success_response($message, null, 202);
 
-        } catch (Throwable $th) {
+    //     } catch (Throwable $th) {
 
-            // Gérer les éventuelles erreurs
-            Log::error("Error while logout : ".$th->getMessage());
+    //         // Gérer les éventuelles erreurs
+    //         Log::error("Error while logout : ".$th->getMessage());
 
-            return ApiResponse::return_server_error_response();
+    //         return ApiResponse::return_server_error_response();
 
-        }
-    }
+    //     }
+    // }
 }

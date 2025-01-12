@@ -20,7 +20,7 @@ export class RequesterService {
     private ConfigurationService : ConfigurationService
   ) { }
 
-  RouteBaseApi : string="https://backend.royaltybrain.com/api/" //this.ConfigurationService.config()
+  RouteBaseApi : string="http://127.0.0.1:8000/api/" //this.ConfigurationService.config()
 
   isproduction : boolean=!window.location.href.includes('localhost')
 
