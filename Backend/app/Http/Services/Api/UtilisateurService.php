@@ -2,6 +2,7 @@
 
 namespace App\Http\Services\Api;
 
+use App\Http\Constants\GlobalConst;
 use App\Http\Helpers\ApiResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -15,38 +16,55 @@ class UtilisateurService {
         $this->userTable = 'Utilisateur';
     }
 
-    public function chooseTimeSlot($data){
-
+    public function chooseTimeSlot($data) {
         try {
-            //code...
+            // Validate input
+            if (!isset($data['timeSlotId']) || !isset($data['patientId'])) {
+                return ApiResponse::return_error_response(
+                    ApiResponse::BAD_REQUEST,
+                    'Données manquantes pour le rendez-vous',
+                    400
+                );
+            }
 
-            $appointment = DB::table('CreneauxDisponibles')
-                                ->where('id', $data['idCreneau'])
-                                ->update(['status' => 'choisi']);
+            // Use transaction to ensure data consistency
+            return DB::transaction(function () use ($data) {
+                // Update time slot status
+                $timeSlot = DB::table('CreneauxDisponibles')
+                    ->where('idCreneau', $data['timeSlotId'])
+                    ->first();
 
-            $dataRdv = [
-                'idPatient' => $data['idPatient'],
-                'idCreneau' => $data['idCreneau'],
-                'idStatutRendezVous' => 'choisi'
-            ];
+                if (!$timeSlot) {
+                    return ApiResponse::return_error_response(
+                        ApiResponse::BAD_REQUEST,
+                        'Ce créneau n\'est plus disponible',
+                        400
+                    );
+                }
 
-            $appointment = DB::table('RendezVous')
-                                ->insert([
-                                    'idPatient' => $data['idPatient'],
-                                    'idCreneau' => $data['idCreneau'],
-                                    'idStatutRendezVous' => 'choisi'
-                                ]);
+                // Create appointment
+                DB::table('RendezVous')->insert([
+                    'idPatient' => $data['patientId'],
+                    'idMedecin' => $timeSlot->idUtilisateur,
+                    'idStatutRendezVous' => 1,
+                    'dateHeure' => $timeSlot->dateDebut,
+                    'createdAt' => now(),
+                    'updatedAt' => now(),
+                    'idTypeRendezVous' => GlobalConst::CONSULTATION,
 
+                ]);
 
-            return ApiResponse::return_success_response(ApiResponse::OK, 'Rendez-vous choisi avec succès', 200);
+                return ApiResponse::return_success_response(
+                    ApiResponse::OK,
+                    'Rendez-vous choisi avec succès',
+                    200
+                );
+            });
 
-        } catch (\Throwable $th) {
-            //throw $th;
-
-            Log::error('Error chooseTimeSlot: ' . $th->getMessage());
-            return ApiResponse::return_error_response(ApiResponse::SERVER_ERROR, 'Erreur lors du choix du rendez-vous', 500);
+        } catch (\Exception $e) {
+            Log::error('Error chooseTimeSlot: ' . $e->getMessage());
+            return ApiResponse::return_server_error_response();
         }
-
     }
 
 }
