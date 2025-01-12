@@ -4,6 +4,7 @@
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DocteurController;
 use App\Http\Controllers\Api\PatientController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,9 @@ Route::prefix('user')->group(function () {
     // Patient
     Route::post('patient/choose-time-slot', action: [PatientController::class, 'chooseTimeSlot']);
     Route::post('patient/ask-for-appointment', action: [PatientController::class, 'askForAppointment']);
+
+    // Doctor
+    Route::post('doctor/addExamination', action: [DocteurController::class, 'addExamination']);
 });
 
 
