@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ConfigurationService } from '../Services/configuration.service';
-import { SecurityService } from '../Services/security.service';
+import { ConfigurationService } from '../../Services/configuration.service';
+import { SecurityService } from '../../Services/security.service';
 
 declare function AllFunctionInit(): any;
 

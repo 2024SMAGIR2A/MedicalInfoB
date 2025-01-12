@@ -38,10 +38,13 @@
           <span class="menu-text">Doctors</span>
         </a>
         <ul class="treeview-menu">
-          <li>
+          <!-- <li>
             <a href="doctor-dashboard.html">Doctors Dashboard</a>
-          </li>
+          </li> -->
           <li>
+            <a [routerLink]="['/PatientList']">Liste Patient</a>
+          </li>
+          <!-- <li>
             <a href="doctors-list.html">Doctors List</a>
           </li>
           <li>
@@ -55,7 +58,7 @@
           </li>
           <li>
             <a href="edit-doctors.html">Edit Doctor</a>
-          </li>
+          </li> -->
         </ul>
       </li>
       <li  class="treeview">
@@ -68,7 +71,7 @@
             <a href="patient-dashboard.html">Patients Dashboard</a>
           </li>
           <li>
-            <a [routerLink]="['/Patient/PatientList']" >Patients List</a>
+            <a [routerLink]="['/PatientList']" >Patients List</a>
           </li>
           <li routerLinkActive="active current-page">
             <a [routerLink]="['/Patient/PatientCreate']">Add Patient</a>

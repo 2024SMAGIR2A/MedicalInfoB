@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { registerLocaleData } from '@angular/common';
-import { DashboardMedecinComponent } from './dashboard-medecin/dashboard-medecin.component';
+import { DashboardMedecinComponent } from './Medecin/dashboard-medecin/dashboard-medecin.component';
 
 import localeFr from '@angular/common/locales/fr';
 import { RouterModule, Routes } from '@angular/router';
@@ -19,6 +19,8 @@ import { SidebarComponent } from './Layouts/sidebar/sidebar.component';
 import { HeaderComponent } from './Layouts/header/header.component';
 import { FooterComponent } from './Layouts/footer/footer.component';
 import { MainHeaderComponent } from './Layouts/main-header/main-header.component';
+import { PatientListComponent } from './Medecin/patient-list/patient-list.component';
+import { PatientDetailsComponent } from './Medecin/patient-details/patient-details.component';
 // import { PatientCreateComponent } from './patient/patient-create/patient-create.component';
 // import { PatientListComponent } from './patient/patient-list/patient-list.component';
 
@@ -29,9 +31,12 @@ registerLocaleData(localeFr, 'fr');
 const appRoutes: Routes = [
   { path: 'DashboardMedecin', component: DashboardMedecinComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
   { path: 'Login', component: LoginComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
-  {
+  { path: 'PatientList', component: PatientListComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
+  { path: 'PatientDetails', component: PatientDetailsComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
 
-    path: '', redirectTo: 'Login', pathMatch:"prefix" },
+
+
+  {path: '', redirectTo: 'Login', pathMatch:"prefix" },
 
 ]
 
@@ -55,6 +60,8 @@ export function initServicesFactory(
     HeaderComponent,
     FooterComponent,
     MainHeaderComponent,
+    PatientListComponent,
+    PatientDetailsComponent,
     // PatientCreateComponent,
     // PatientListComponent
   ],
