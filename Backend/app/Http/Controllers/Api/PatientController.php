@@ -7,6 +7,8 @@ use App\Http\Helpers\ApiResponse;
 use App\Http\Services\Api\UtilisateurService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\DossierMedical;
+
 
 class PatientController extends Controller
 {
@@ -42,5 +44,16 @@ class PatientController extends Controller
 
     }
 
+    public function listPatients()
+    {
+        // Récupérer tous les patients non supprimés
+        $patients = DossierMedical::where('isDeleted', false)
+            ->get(['idDossier', 'nomPatient']);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $patients,
+        ]);
+    }
 
 }
