@@ -21,6 +21,7 @@ import { FooterComponent } from './Layouts/footer/footer.component';
 import { MainHeaderComponent } from './Layouts/main-header/main-header.component';
 import { PatientListComponent } from './Medecin/patient-list/patient-list.component';
 import { PatientDetailsComponent } from './Medecin/patient-details/patient-details.component';
+import { AddExamenComponent } from './Medecin/add-examen/add-examen.component';
 // import { PatientCreateComponent } from './patient/patient-create/patient-create.component';
 // import { PatientListComponent } from './patient/patient-list/patient-list.component';
 
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
   { path: 'Login', component: LoginComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
   { path: 'PatientList', component: PatientListComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
   { path: 'PatientDetails', component: PatientDetailsComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
+  { path: 'AddExamen', component:  AddExamenComponent}, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
 
 
 
@@ -62,6 +64,7 @@ export function initServicesFactory(
     MainHeaderComponent,
     PatientListComponent,
     PatientDetailsComponent,
+    AddExamenComponent,
     // PatientCreateComponent,
     // PatientListComponent
   ],
