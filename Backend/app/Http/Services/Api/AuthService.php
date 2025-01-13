@@ -41,8 +41,9 @@ class AuthService {
 
             }
 
+
             // Vérifier si le mot de passe correspond
-            if (!Hash::check($userLoginData['password'], $user->password)) {
+            if (!Hash::check($userLoginData['password'], $user->motDePasse)) {
 
                 $message = ApiResponse::INVALID_CREDENTIALS;
                 $errorDetail = 'Aucun utilisateur trouvé';
