@@ -21,6 +21,7 @@ class PatientController extends Controller
     public function chooseTimeSlot(Request $request){
         $validator = Validator::make($request->all(), [
             'timeSlotId' => 'required|integer',
+            'patientId' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -30,7 +31,9 @@ class PatientController extends Controller
             return ApiResponse::return_error_response(ApiResponse::BAD_REQUEST, $errorDetail, 400);
         }
 
-        return $this->patientService->chooseTimeSlot($request->all());
+        $validatedData = $validator->validated();
+
+        return $this->patientService->chooseTimeSlot($validatedData);
     }
 
 
