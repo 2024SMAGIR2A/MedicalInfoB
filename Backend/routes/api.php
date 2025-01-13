@@ -52,6 +52,15 @@ Route::prefix('user')->group(function () {
     Route::get('/rendezvous/rejetes', [RendezVousController::class, 'getDemandesRejetees']);
     // Doctor
     Route::post('doctor/addExamination', action: [DocteurController::class, 'addExamination']);
+
+    // Lister les examens
+    Route::get('doctor/listExaminations', [DocteurController::class, 'listExamens']);
+
+    // Récupérer la liste des patients
+    Route::get('patients', [DocteurController::class, 'listPatients']);
+
+    // Récupérer la liste des types d'examens
+    Route::get('examenTypes', [DocteurController::class, 'listTypeExamens']);
 });
 
 

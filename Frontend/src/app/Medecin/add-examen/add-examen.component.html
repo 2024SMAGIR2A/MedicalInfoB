@@ -1,0 +1,59 @@
+<div class="app-body">
+  <div class="row gx-3 justify-content-center">
+      <div class="col-8">
+          <div class="card mb-3">
+              <div class="card-body">
+                  <h2 class="card-title">Ajouter un Examen Médical</h2>
+                  <form [formGroup]="examenForm" (ngSubmit)="onSubmit()">
+                      <!-- Sélection du patient -->
+                      <div class="mb-3">
+                          <label for="selectPatient" class="form-label">Sélectionner un Patient</label>
+                          <select class="form-select" id="selectPatient" formControlName="idDossier" required>
+                              <option value="">Choisir un patient...</option>
+                              <option *ngFor="let patient of patients" [value]="patient.idDossier">
+                                  {{ patient.nomPatient }}
+                              </option>
+                          </select>
+                      </div>
+
+                      <!-- Type d'examen -->
+                      <div class="mb-3">
+                          <label for="selectTypeExamen" class="form-label">Type d'Examen</label>
+                          <select class="form-select" id="selectTypeExamen" formControlName="idTypeExamen" required>
+                              <option value="">Choisir un type d'examen...</option>
+                              <option *ngFor="let typeExamen of typeExamens" [value]="typeExamen.idTypeExamen">
+                                  {{ typeExamen.nomTypeExamen }}
+                              </option>
+                          </select>
+                      </div>
+
+                      <!-- Date de l'examen -->
+                      <div class="mb-3">
+                          <label for="dateExamen" class="form-label">Date de l'Examen</label>
+                          <input type="date" class="form-control" id="dateExamen" formControlName="dateExamen" required>
+                      </div>
+
+                      <!-- Résultats -->
+                      <div class="mb-3">
+                          <label for="resultats" class="form-label">Résultats</label>
+                          <textarea class="form-control" id="resultats" rows="3" formControlName="resultats" placeholder="Entrez les résultats de l'examen..."></textarea>
+                      </div>
+
+                      <!-- Rapport -->
+                      <div class="mb-3">
+                          <label for="rapport" class="form-label">Rapport</label>
+                          <textarea class="form-control" id="rapport" rows="3" formControlName="rapport" placeholder="Entrez le rapport médical..."></textarea>
+                      </div>
+
+                      <!-- Bouton de soumission -->
+                      <div class="d-grid gap-2 col-3 mx-auto">
+                          <button type="submit" class="btn btn-primary" [disabled]="examenForm.invalid">
+                              <i class="ri-save-line"></i> Enregistrer l'Examen
+                          </button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

@@ -20,11 +20,12 @@ import { FooterComponent } from './Layouts/footer/footer.component';
 import { MainHeaderComponent } from './Layouts/main-header/main-header.component';
 import { PatientListComponent } from './Medecin/patient-list/patient-list.component';
 import { PatientDetailsComponent } from './Medecin/patient-details/patient-details.component';
+import { AddExamenComponent } from './Medecin/add-examen/add-examen.component';
 import { RendezvousComponent } from './Patient/rendezvous/rendezvous/rendezvous.component';
 import { RendezvousListComponent } from './Patient/rendezvous/rendezvous-list/rendezvous-list.component';
 import { RendezvousdemandeComponent } from './Medecin/rendezvousdemande/rendezvousdemande/rendezvousdemande.component';
+import { RendezvousaccepteeComponent } from './Medecin/rendezvousdemande/rendezvousacceptee/rendezvousacceptee.component';
 import { RendezvousrejeteeComponent } from './Medecin/rendezvousdemande/rendezvousrejetee/rendezvousrejetee.component';
-import { RendezvousaccepteeComponent } from './Medecin/rendezvousdemande/rendezvousacceptee/rendezvousacceptee.component'; // ou le bon chemin
 // import { PatientCreateComponent } from './patient/patient-create/patient-create.component';
 // import { PatientListComponent } from './patient/patient-list/patient-list.component';
 
@@ -37,6 +38,7 @@ const appRoutes: Routes = [
   { path: 'Login', component: LoginComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
   { path: 'PatientList', component: PatientListComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
   { path: 'PatientDetails', component: PatientDetailsComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
+  { path: 'AddExamen', component:  AddExamenComponent}, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
 
   { path: 'rdv', component: RendezvousComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
   { path: 'rdv/list', component: RendezvousListComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
@@ -76,6 +78,7 @@ export function initServicesFactory(
     RendezvousdemandeComponent,
     RendezvousrejeteeComponent,
     RendezvousaccepteeComponent
+    AddExamenComponent,
     // PatientCreateComponent,
     // PatientListComponent
   ],
