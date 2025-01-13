@@ -15,6 +15,7 @@ class ApiResponse {
     const FOUND = 'DATA FOUND';
     const SERVER_ERROR = "INTERNAL ERROR";
     const ALREADY_EXIST = "RESOURCES ALREADY EXIST";
+    const NO_CONTENT = "NO CONTENT";
 
     public static function return_error_response($error, $errorDetail, $status) {
 

@@ -40,7 +40,10 @@ Route::prefix('user')->group(function () {
     Route::post('patient/ask-for-appointment', action: [PatientController::class, 'askForAppointment']);
 
     // Doctor
-    Route::post('doctor/addExamination', action: [DocteurController::class, 'addExamination']);
+    Route::prefix('doctor')->group(function (){
+        Route::post('addExamination', action: [DocteurController::class, 'addExamination']);
+        Route::get('available/time-slot', [DocteurController::class, 'availableTimeSlot']);
+    });
 });
 
 

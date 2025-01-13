@@ -16,6 +16,76 @@ class UtilisateurService {
         $this->userTable = 'Utilisateur';
     }
 
+
+    public function getTimeSlot($filters = [])
+    {
+        try {
+            $query = DB::table('CreneauxDisponibles as cd')
+                ->select([
+                    'cd.idCreneau',
+                    'cd.idUtilisateur',
+                    'cd.dateDebut',
+                    'cd.dateFin',
+                    'u.nom as nomMedecin',
+                    'u.prenom as prenomMedecin',
+                    's.nom'
+                ])
+                ->join('Utilisateur as u', 'cd.idUtilisateur', '=', 'u.idUtilisateur')
+                ->join('Specialite as s', 'u.idSpecialite', '=', 's.idSpecialite')
+                ->where('cd.dateDebut', '>', now());
+
+            // Apply filters if provided
+            if (!empty($filters['specialite'])) {
+                $query->where('s.idSpecialite', $filters['specialite']);
+            }
+
+            if (!empty($filters['medecin'])) {
+                $query->where('u.idUtilisateur', $filters['medecin']);
+            }
+
+            if (!empty($filters['date'])) {
+                $date = date('Y-m-d', strtotime($filters['date']));
+                $query->whereDate('cd.dateDebut', $date);
+            }
+
+            $timeSlots = $query->orderBy('cd.dateDebut', 'asc')->get();
+
+            if ($timeSlots->isEmpty()) {
+                return ApiResponse::return_success_response(
+                    ApiResponse::NO_CONTENT,
+                    [],
+                    204
+                );
+            }
+
+            // Format the response data
+            $formattedSlots = $timeSlots->map(function ($slot) {
+                return [
+                    'id' => $slot->idCreneau,
+                    'medecin' => [
+                        'id' => $slot->idUtilisateur,
+                        'nom' => $slot->nomMedecin,
+                        'prenom' => $slot->prenomMedecin,
+                        'specialite' => $slot->nom
+                    ],
+                    'debut' => $slot->dateDebut,
+                    'fin' => $slot->dateFin
+                ];
+            });
+
+
+            return ApiResponse::return_success_response(
+                ApiResponse::OK,
+                $formattedSlots,
+                200
+            );
+
+        } catch (\Exception $e) {
+            Log::error('Error getTimeSlot: ' . $e->getMessage());
+            return ApiResponse::return_server_error_response();
+        }
+    }
+
     public function chooseTimeSlot($data) {
         try {
             // Validate input
