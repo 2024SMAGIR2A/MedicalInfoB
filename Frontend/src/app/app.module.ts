@@ -1,6 +1,5 @@
 import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { registerLocaleData } from '@angular/common';
@@ -21,6 +20,11 @@ import { FooterComponent } from './Layouts/footer/footer.component';
 import { MainHeaderComponent } from './Layouts/main-header/main-header.component';
 import { PatientListComponent } from './Medecin/patient-list/patient-list.component';
 import { PatientDetailsComponent } from './Medecin/patient-details/patient-details.component';
+import { RendezvousComponent } from './Patient/rendezvous/rendezvous/rendezvous.component';
+import { RendezvousListComponent } from './Patient/rendezvous/rendezvous-list/rendezvous-list.component';
+import { RendezvousdemandeComponent } from './Medecin/rendezvousdemande/rendezvousdemande/rendezvousdemande.component';
+import { RendezvousrejeteeComponent } from './Medecin/rendezvousdemande/rendezvousrejetee/rendezvousrejetee.component';
+import { RendezvousaccepteeComponent } from './Medecin/rendezvousdemande/rendezvousacceptee/rendezvousacceptee.component'; // ou le bon chemin
 // import { PatientCreateComponent } from './patient/patient-create/patient-create.component';
 // import { PatientListComponent } from './patient/patient-list/patient-list.component';
 
@@ -34,6 +38,11 @@ const appRoutes: Routes = [
   { path: 'PatientList', component: PatientListComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
   { path: 'PatientDetails', component: PatientDetailsComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
 
+  { path: 'rdv', component: RendezvousComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
+  { path: 'rdv/list', component: RendezvousListComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
+  { path: 'rdv/confirm', component: RendezvousdemandeComponent },
+  { path: 'rdv/accepte', component: RendezvousaccepteeComponent },
+  { path: 'rdv/refuse', component: RendezvousrejeteeComponent },
 
 
   {path: '', redirectTo: 'Login', pathMatch:"prefix" },
@@ -62,6 +71,11 @@ export function initServicesFactory(
     MainHeaderComponent,
     PatientListComponent,
     PatientDetailsComponent,
+    RendezvousComponent,
+    RendezvousListComponent,
+    RendezvousdemandeComponent,
+    RendezvousrejeteeComponent,
+    RendezvousaccepteeComponent
     // PatientCreateComponent,
     // PatientListComponent
   ],
@@ -75,6 +89,7 @@ export function initServicesFactory(
     ReactiveFormsModule,
     BrowserAnimationsModule,
     NgxSpinnerModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: "fr-FR" },
