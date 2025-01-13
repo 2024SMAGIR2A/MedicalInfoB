@@ -1,94 +1,62 @@
-import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { registerLocaleData } from '@angular/common';
-import { DashboardMedecinComponent } from './Medecin/dashboard-medecin/dashboard-medecin.component';
-
-import localeFr from '@angular/common/locales/fr';
-import { RouterModule, Routes } from '@angular/router';
-import { ConfigurationService } from './Services/configuration.service';
-import { HttpClientModule } from '@angular/common/http';
-import { RequesterService } from './Services/requester.service';
-import { LoginComponent } from './login/login.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgxSpinnerModule } from 'ngx-spinner';
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { SidebarComponent } from './Layouts/sidebar/sidebar.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
+
+// Material Imports
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
+// Components
+import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
 import { HeaderComponent } from './Layouts/header/header.component';
 import { FooterComponent } from './Layouts/footer/footer.component';
+import { SidebarComponent } from './Layouts/sidebar/sidebar.component';
 import { MainHeaderComponent } from './Layouts/main-header/main-header.component';
-import { PatientListComponent } from './Medecin/patient-list/patient-list.component';
-import { PatientDetailsComponent } from './Medecin/patient-details/patient-details.component';
-// import { PatientCreateComponent } from './patient/patient-create/patient-create.component';
-// import { PatientListComponent } from './patient/patient-list/patient-list.component';
-
-
-
-registerLocaleData(localeFr, 'fr');
-
-const appRoutes: Routes = [
-  { path: 'DashboardMedecin', component: DashboardMedecinComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
-  { path: 'Login', component: LoginComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
-  { path: 'PatientList', component: PatientListComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
-  { path: 'PatientDetails', component: PatientDetailsComponent }, //, canActivate :[SessionGuard],},//, canActivate :[SessionGuard],},
-
-
-
-  {path: '', redirectTo: 'Login', pathMatch:"prefix" },
-
-]
-
-export function initServicesFactory(
-  configurationService: ConfigurationService,requesterService : RequesterService
-) {
-  return async () => {
-    // console.log('initServicesFactory - started');
-    const config = await configurationService.loadConfiguration();
-    // RequesterService.RouteBaseApi = config.RouteBaseApi
-    // console.log(requesterService.RouteBaseApi)
-    // console.log('initServicesFactory - completed',config.RouteBaseApi);
-  };
-}
+import { MedecinDisponibleComponent } from './Patient/medecin-disponible/medecin-disponible.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    SidebarComponent,
     HeaderComponent,
     FooterComponent,
+    SidebarComponent,
     MainHeaderComponent,
-    PatientListComponent,
-    PatientDetailsComponent,
-    // PatientCreateComponent,
-    // PatientListComponent
+    MedecinDisponibleComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    RouterModule,
-    RouterModule.forRoot(appRoutes),
-    HttpClientModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule,
-    NgxSpinnerModule,
+    HttpClientModule,
+    AppRoutingModule,
+    // Material Modules
+    MatInputModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressBarModule
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: "fr-FR" },
-
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initServicesFactory,
-      multi : true,
-      deps: [ConfigurationService],
-    },
-
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }  // For French date format
   ],
-  bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

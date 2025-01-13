@@ -67,17 +67,20 @@
           <span class="menu-text">Patients</span>
         </a>
         <ul class="treeview-menu">
-          <li>
+          <!-- <li>
             <a href="patient-dashboard.html">Patients Dashboard</a>
           </li>
           <li>
             <a [routerLink]="['/PatientList']" >Patients List</a>
-          </li>
+          </li> -->
           <li routerLinkActive="active current-page">
             <a [routerLink]="['/Patient/PatientCreate']">Add Patient</a>
           </li>
           <li>
             <a href="edit-patient.html">Edit Patient Details</a>
+          </li>
+          <li>
+            <a [routerLink]="['patient/medecin-disponible']" > Medecins disponible </a>
           </li>
         </ul>
       </li>

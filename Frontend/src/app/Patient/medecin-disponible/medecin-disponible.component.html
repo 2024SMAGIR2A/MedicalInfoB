@@ -1,0 +1,74 @@
+<div class="container mt-4">
+  <!-- Filters -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <select class="form-select" [(ngModel)]="selectedSpecialty" (ngModelChange)="onFilterChange()">
+        <option [ngValue]="null">Toutes les spécialités</option>
+        <option *ngFor="let specialty of specialties" [value]="specialty.id">
+          {{specialty.name}}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <input type="date" class="form-control" [(ngModel)]="selectedDate" (ngModelChange)="onFilterChange()">
+    </div>
+  </div>
+
+  <!-- Time Slots List -->
+  <div class="row">
+    <div class="col-md-4 mb-3" *ngFor="let slot of timeSlots">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Dr. {{slot.medecin.prenom}} {{slot.medecin.nom}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{slot.medecin.specialite}}</h6>
+          <p class="card-text">
+            Date: {{slot.debut | date:'dd/MM/yyyy'}}<br>
+            Heure: {{slot.debut | date:'HH:mm'}} - {{slot.fin | date:'HH:mm'}}
+          </p>
+          <button class="btn"
+                  [ngClass]="{
+                    'btn-primary': !bookedSlotId,
+                    'btn-success': slot.id === bookedSlotId,
+                    'btn-secondary': bookedSlotId && slot.id !== bookedSlotId
+                  }"
+                  (click)="bookAppointment(slot.id)"
+                  [disabled]="bookingInProgress && currentBookingId === slot.id || bookedSlotId !== null">
+            <span *ngIf="slot.id === bookedSlotId">
+              <i class="fas fa-check"></i> Réservé
+            </span>
+            <span *ngIf="!(bookingInProgress && currentBookingId === slot.id) && slot.id !== bookedSlotId">
+              Prendre rendez-vous
+            </span>
+            <span *ngIf="bookingInProgress && currentBookingId === slot.id" class="spinner-border spinner-border-sm" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="text-center" *ngIf="loading">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <!-- Success Message -->
+  <div class="alert alert-success mt-3" *ngIf="bookingSuccess">
+    {{bookingSuccess}}
+  </div>
+
+  <!-- Error Message -->
+  <div class="alert alert-danger mt-3" *ngIf="bookingError">
+    {{bookingError}}
+  </div>
+
+  <!-- Add this after the success message -->
+  <div class="text-center mt-3" *ngIf="bookedSlotId">
+    <button class="btn btn-outline-primary" (click)="resetBooking()">
+      Faire une nouvelle réservation
+    </button>
+  </div>
+</div>
