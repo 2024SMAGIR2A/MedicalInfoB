@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+Use Exception;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Throwable;
@@ -189,6 +191,28 @@ class AuthController extends Controller
  *     )
  * )
  */
+
+    public function loginNew(Request $request)
+    {
+        try
+        {
+
+            $data=DB::select(
+
+                "CALL Authentication(?,?)",
+                array(
+                    $request->input('email')
+                    ,$request->input('password')
+                )
+            );
+
+            return response()->json($data);
+        }
+        catch(Exception $exp)
+        {
+            throw $exp;
+        }
+    }
 
     public function register(Request $request)
     {

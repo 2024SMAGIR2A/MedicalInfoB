@@ -137,12 +137,19 @@ export class RequesterService {
 
 
   async AsyncPostResponse(
-    targetapi : string, data : any,ShowLoader : boolean=false,AutoCloseLoader : boolean=false
-    , ShowSucessmessage : boolean=true,message : string="",headers : HttpHeaders= new HttpHeaders()
+    targetapi : string, data : any,ShowLoader : boolean=true,AutoCloseLoader : boolean=true
+    , ShowSucessmessage : boolean=false,message : string="",headers : HttpHeaders= new HttpHeaders()
     ,FromExternalApi : boolean=false
     )
   {
+    var empty={}
     // Swal.close()
+    if (data == empty)
+    {
+      ShowLoader = true
+      ShowSucessmessage=false
+      AutoCloseLoader=true
+    }
     if(ShowLoader)
     {
       this.SweetAlertService.ShowLoader()
@@ -193,6 +200,11 @@ export class RequesterService {
         this.SweetAlertService.CloseLoader()
         // Swal.close()
       }
+    }
+
+    if(Array.isArray(ReturnedResponse) && ReturnedResponse.length==0)
+    {
+      this.SweetAlertService.CloseLoader()
     }
 
     return [isOk,ReturnedResponse];

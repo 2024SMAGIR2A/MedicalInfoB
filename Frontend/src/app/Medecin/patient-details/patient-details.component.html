@@ -17,26 +17,8 @@
                             <i class="ri-account-circle-line fs-3"></i>
                           </div>
                           <div>
-                            <h4 class="mb-1">Carole</h4>
-                            <p class="m-0">Patient Name</p>
-                          </div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                          <div class="icon-box lg bg-primary rounded-5 me-2">
-                            <i class="ri-women-line fs-3"></i>
-                          </div>
-                          <div>
-                            <h4 class="mb-1">Female</h4>
-                            <p class="m-0">Gender</p>
-                          </div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                          <div class="icon-box lg bg-primary rounded-5 me-2">
-                            <i class="ri-arrow-right-up-line fs-3"></i>
-                          </div>
-                          <div>
-                            <h4 class="mb-1">68</h4>
-                            <p class="m-0">Patient Age</p>
+                            <h4 class="mb-1">{{Patient.NomPrenom}}</h4>
+                            <p class="m-0">Nom Patient</p>
                           </div>
                         </div>
                         <div class="d-flex align-items-center">
@@ -44,8 +26,8 @@
                             <i class="ri-contrast-drop-2-line fs-3"></i>
                           </div>
                           <div>
-                            <h4 class="mb-1">O+</h4>
-                            <p class="m-0">Blood Type</p>
+                            <h4 class="mb-1">{{Patient.GroupeSanguin}}</h4>
+                            <p class="m-0">Groupe Sanguin</p>
                           </div>
                         </div>
                         <div class="d-flex align-items-center">
@@ -53,8 +35,8 @@
                             <i class="ri-stethoscope-line fs-3 text-body"></i>
                           </div>
                           <div>
-                            <h4 class="mb-1">Dr. David</h4>
-                            <p class="m-0">Consulting Doctor</p>
+                            <h4 class="mb-1">{{Patient.NomPrenomMedecin}}</h4>
+                            <p class="m-0">Medecin</p>
                           </div>
                         </div>
                       </div>
@@ -70,7 +52,7 @@
             <!-- Row ends -->
 
             <!-- Row starts -->
-            <div class="row gx-3">
+            <!-- <div class="row gx-3">
               <div class="col-xxl-3 col-sm-6 col-12">
                 <div class="card mb-3">
                   <div class="card-body">
@@ -191,17 +173,16 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!-- Row ends -->
 
             <!-- Row starts -->
             <div class="row gx-3">
 
-
-              <div class="col-xl-6 col-sm-12">
+              <div class="col-xl-3 col-sm-12 m-auto" *ngIf="AllergieList!=[]">
                 <div class="card mb-3">
                   <div class="card-header">
-                    <h5 class="card-title">Doctor Visits</h5>
+                    <h5 class="card-title">Liste des allergies du patient</h5>
                   </div>
                   <div class="card-body">
                     <div class="table-outer">
@@ -209,75 +190,69 @@
                         <table class="table align-middle truncate m-0">
                           <thead>
                             <tr>
-                              <th>Doctor</th>
-                              <th>Date</th>
-                              <th>Department</th>
-                              <th>Reports</th>
+                              <th>Libelle</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>
-                                <img src="assets/images/user1.png" class="img-3x rounded-2" alt="Medical Dashboard"> Dr.
-                                Hector
-                              </td>
-                              <td>20/05/2024</td>
-                              <td>
-                                Dentist
-                              </td>
-                              <td>
-                                <div class="d-inline-flex gap-1">
-                                  <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#viewReportsModal1">
-                                    View Reports
-                                  </button>
-                                  <button class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="Download Report">
-                                    <i class="ri-file-download-line"></i>
-                                  </button>
-                                </div>
-                              </td>
+                            <tr *ngFor="let item of AllergieList">
+                              <td>{{item.nom}}</td>
                             </tr>
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-12 col-sm-12">
+                <div class="card mb-3">
+                  <div class="card-header">
+                    <h5 class="card-title">Liste des traitements</h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-outer">
+                      <div class="table-responsive">
+                        <table class="table align-middle truncate m-0">
+                          <thead>
                             <tr>
-                              <td>
-                                <img src="assets/images/user5.png" class="img-3x rounded-2" alt="Medical Dashboard"> Dr.
-                                Mitchel
-                              </td>
-                              <td>20/05/2024</td>
-                              <td>
-                                Urologist
-                              </td>
-                              <td>
-                                <div class="d-inline-flex gap-1">
-                                  <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#viewReportsModal1">
-                                    View Reports
-                                  </button>
-                                  <button class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="Download Report">
-                                    <i class="ri-file-download-line"></i>
-                                  </button>
-                                </div>
-                              </td>
+                              <th>IdDossier</th>
+                              <th>Medecin</th>
+                              <th>Date Consultation</th>
+                              <th>Observation Consultation</th>
+                              <th>Recommandation</th>
+                              <th>Traitement</th>
+                              <th>Dosage</th>
+                              <th>Status Dossier</th>
                             </tr>
-                            <tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of TraitementList">
+                              <td>#{{item.idDossier}}</td>
                               <td>
-                                <img src="assets/images/user3.png" class="img-3x rounded-2" alt="Medical Dashboard"> Dr.
-                                Fermin
+                                <img src="assets/images/user1.png" class="img-3x rounded-2" alt="Medical Dashboard">
+                                {{item.Medecin}}
                               </td>
-                              <td>18/03/2024</td>
+                              <td>{{item.dateConsultation}}</td>
                               <td>
-                                Surgeon
+                                {{item.observations}}
                               </td>
+                              <td>{{item.recommandations}}</td>
+                              <td>{{item.nom}}</td>
+                              <td>{{item.dosage}}</td>
                               <td>
                                 <div class="d-inline-flex gap-1">
-                                  <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                  <button class="btn btn-sm"
+                                  [ngClass]="{
+                                    'btn-success' : item.idStatutDossierMedical==EnumStatutDossierMedical.Actif,
+                                    'btn-secondary' : item.idStatutDossierMedical==EnumStatutDossierMedical.Archive,
+                                    'btn-warning' : item.idStatutDossierMedical==EnumStatutDossierMedical.EnAttente
+                                    }"
+
+                                    data-bs-toggle="modal"
                                     data-bs-target="#viewReportsModal1">
-                                    View Reports
-                                  </button>
-                                  <button class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="Download Report">
-                                    <i class="ri-file-download-line"></i>
+                                    {{item.StatutDossier}}
                                   </button>
                                 </div>
                               </td>
@@ -289,7 +264,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-xl-6 col-sm-12">
+              <!-- <div class="col-xl-6 col-sm-12">
                 <div class="card mb-3">
                   <div class="card-header">
                     <h5 class="card-title">Reports</h5>
@@ -386,102 +361,8 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-xl-4 col-sm-6">
-                <div class="card mb-3">
-                  <div class="card-header">
-                    <h5 class="card-title">Health Activity</h5>
-                  </div>
-                  <div class="card-body">
-                    <div class="scroll350">
-                      <div id="healthActivity"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-sm-6">
-                <div class="card mb-3">
-                  <div class="card-header">
-                    <h5 class="card-title">Pharmacy</h5>
-                  </div>
-                  <div class="card-body">
-                    <div class="scroll350">
-                      <div class="text-center">
-                        <img class="img-fluid mb-3" src="assets/images/reports.svg" style="width: 180px;"
-                          alt="Hospital Admin Templates">
-                        <h2>$980</h2>
-                        <span class="d-block mb-1">Average Spending</span>
-                        <span class="d-block mb-2"><b>+20%</b> vs last month</span>
-                        <p class="m-0 opacity-75">You can choose from over 1600 admin dashboard templates on Bootstrap
-                          Gallery.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-sm-6">
-                <div class="card mb-3">
-                  <div class="card-header">
-                    <h5 class="card-title">Timeline</h5>
-                  </div>
-                  <div class="card-body">
+              </div> -->
 
-                    <!-- Activity starts -->
-                    <div class="scroll350">
-                      <div class="activity-feed">
-                        <div class="feed-item">
-                          <span class="feed-date pb-1" data-bs-toggle="tooltip" data-bs-title="Today 05:32:35">An
-                            Hour Ago</span>
-                          <div class="mb-1">
-                            <a href="patient-dashboard.html#" class="text-primary">Dr. Janie Mcdonald</a> - sent a new prescription.
-                          </div>
-                          <div class="mb-1">Medecine Name - <a href="patient-dashboard.html#" class="text-danger">Amocvmillin</a></div>
-                          <a href="patient-dashboard.html#!" class="text-dark">Payment Link <i class="ri-arrow-right-up-line"></i> </a>
-                        </div>
-                        <div class="feed-item">
-                          <span class="feed-date pb-1" data-bs-toggle="tooltip" data-bs-title="Today 05:32:35">An
-                            Hour Ago</span>
-                          <div class="mb-1">
-                            <a href="patient-dashboard.html#" class="text-primary">Dr. Hector Banks</a> - uploaded a report.
-                          </div>
-                          <div class="mb-1">Report Name - <a href="patient-dashboard.html#" class="text-danger">Lisymorpril</a></div>
-                          <a href="patient-dashboard.html#!" class="text-dark">Payment Link <i class="ri-arrow-right-up-line"></i> </a>
-                        </div>
-                        <div class="feed-item">
-                          <span class="feed-date pb-1" data-bs-toggle="tooltip" data-bs-title="Today 05:32:35">An
-                            Hour Ago</span>
-                          <div class="mb-1">
-                            <a href="patient-dashboard.html#" class="text-primary">Dr. Deena Cooley</a> - sent medecine details.
-                          </div>
-                          <div class="mb-1">Medecine Name - <a href="patient-dashboard.html#" class="text-danger">Predeymsone</a></div>
-                          <a href="patient-dashboard.html#!" class="text-dark">Payment Link <i class="ri-arrow-right-up-line"></i> </a>
-                        </div>
-                        <div class="feed-item">
-                          <span class="feed-date pb-1" data-bs-toggle="tooltip" data-bs-title="Today 05:32:35">An
-                            Hour Ago</span>
-                          <div class="mb-1">
-                            <a href="patient-dashboard.html#" class="text-primary">Dr. Mitchel Alvarez</a> - added import files.
-                          </div>
-                          <div class="mb-1">File Name - <a href="patient-dashboard.html#" class="text-danger">Naverreone</a></div>
-                          <a href="patient-dashboard.html#!" class="text-dark">Payment Link <i class="ri-arrow-right-up-line"></i> </a>
-                        </div>
-                        <div class="feed-item">
-                          <span class="feed-date pb-1" data-bs-toggle="tooltip" data-bs-title="Today 05:32:35">An
-                            Hour Ago</span>
-                          <div class="mb-1">
-                            <a href="patient-dashboard.html#" class="text-primary">Dr. Owen Scott</a> - reviewed your file.
-                          </div>
-                          <div class="mb-1">File Name - <a href="patient-dashboard.html#" class="text-danger">Gabateyntin</a></div>
-                          <a href="patient-dashboard.html#!" class="text-dark">Payment Link <i class="ri-arrow-right-up-line"></i> </a>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- Activity ends -->
-
-                  </div>
-                </div>
-              </div>
             </div>
             <!-- Row ends -->
 

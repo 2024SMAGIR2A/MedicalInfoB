@@ -7,6 +7,8 @@ use App\Http\Helpers\ApiResponse;
 use App\Http\Services\Api\UtilisateurService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+Use Exception;
 
 class PatientController extends Controller
 {
@@ -37,6 +39,64 @@ class PatientController extends Controller
 
     public function askForAppointment(Request $request){
 
+    }
+
+    public function GetPatientList()
+    {
+        try
+        {
+            $data=DB::select(
+                'call GetPatientList()'
+            );
+
+            return response()->json($data);
+        }
+        catch(Exception $exp)
+        {
+            throw $exp;
+        }
+    }
+
+    public function GetAllergieByPatientId(Request $request)
+    {
+        try
+        {
+
+            $data=DB::select(
+
+                "CALL GetAllergieByPatientId(?)",
+                array(
+                    $request->input('id')
+                )
+            );
+
+            return response()->json($data);
+        }
+        catch(Exception $exp)
+        {
+            throw $exp;
+        }
+    }
+
+    public function GetTraitementByPatientId(Request $request)
+    {
+        try
+        {
+
+            $data=DB::select(
+
+                "CALL GetTraitementByPatientId(?)",
+                array(
+                    $request->input('id')
+                )
+            );
+
+            return response()->json($data);
+        }
+        catch(Exception $exp)
+        {
+            throw $exp;
+        }
     }
 
 

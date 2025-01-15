@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
     Route::post('/login', action: [AuthController::class, 'login']);
+    Route::post('/loginNew', action: [AuthController::class, 'loginNew']);
     Route::post('/register', action: [AuthController::class, 'register']);
     Route::get('/users', action: [AuthController::class, 'show']);
 
@@ -38,6 +39,9 @@ Route::prefix('user')->group(function () {
     // Patient
     Route::post('patient/choose-time-slot', action: [PatientController::class, 'chooseTimeSlot']);
     Route::post('patient/ask-for-appointment', action: [PatientController::class, 'askForAppointment']);
+    Route::post('patient/GetPatientList', action: [PatientController::class, 'GetPatientList']);
+    Route::post('patient/GetAllergieByPatientId', action: [PatientController::class, 'GetAllergieByPatientId']);
+    Route::post('patient/GetTraitementByPatientId', action: [PatientController::class, 'GetTraitementByPatientId']);
 
     // Doctor
     Route::post('doctor/addExamination', action: [DocteurController::class, 'addExamination']);
