@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 Use Exception;
+use App\Models\DossierMedical;
+
 
 class PatientController extends Controller
 {
@@ -23,6 +25,7 @@ class PatientController extends Controller
     public function chooseTimeSlot(Request $request){
         $validator = Validator::make($request->all(), [
             'timeSlotId' => 'required|integer',
+            'patientId' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -32,7 +35,9 @@ class PatientController extends Controller
             return ApiResponse::return_error_response(ApiResponse::BAD_REQUEST, $errorDetail, 400);
         }
 
-        return $this->patientService->chooseTimeSlot($request->all());
+        $validatedData = $validator->validated();
+
+        return $this->patientService->chooseTimeSlot($validatedData);
     }
 
 
@@ -99,5 +104,16 @@ class PatientController extends Controller
         }
     }
 
+    public function listPatients()
+    {
+        // Récupérer tous les patients non supprimés
+        $patients = DossierMedical::where('isDeleted', false)
+            ->get(['idDossier', 'nomPatient']);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $patients,
+        ]);
+    }
 
 }

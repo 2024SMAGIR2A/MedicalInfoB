@@ -8,7 +8,8 @@ use App\Http\Controllers\Api\DocteurController;
 use App\Http\Controllers\Api\PatientController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\RendezVousController;
+// use App\Http\Controllers\UtilisController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -43,9 +44,30 @@ Route::prefix('user')->group(function () {
     Route::post('patient/GetAllergieByPatientId', action: [PatientController::class, 'GetAllergieByPatientId']);
     Route::post('patient/GetTraitementByPatientId', action: [PatientController::class, 'GetTraitementByPatientId']);
 
+    Route::post('/rendezvous', [RendezVousController::class, 'store']);
+    Route::get('/typesrendezvous', [RendezVousController::class, 'getTypesRendezVous']);
+    Route::get('/medecin', [RendezVousController::class, 'getMedecins']);
+    Route::get('/rendezvous/patient/{idPatient}', [RendezVousController::class, 'getRendezVousByPatient']);
+    Route::get('/medecin/{idMedecin}/demandes', [RendezVousController::class, 'getDemandesMedecin']);
+    Route::post('/rendezvous/{id}/valider', [RendezVousController::class, 'validerRendezVous']);
+    Route::post('/rendezvous/{id}/refuser', [RendezVousController::class, 'refuserRendezVous']);
+    Route::get('/rendezvous/acceptes', [RendezVousController::class, 'getDemandesAcceptees']);
+    // Route pour les demandes rejetées
+    Route::get('/rendezvous/rejetes', [RendezVousController::class, 'getDemandesRejetees']);
     // Doctor
     Route::post('doctor/addExamination', action: [DocteurController::class, 'addExamination']);
+
+    // Lister les examens
+    Route::get('doctor/listExaminations', [DocteurController::class, 'listExamens']);
+
+    // Récupérer la liste des patients
+    Route::get('patients', [DocteurController::class, 'listPatients']);
+
+    // Récupérer la liste des types d'examens
+    Route::get('examenTypes', [DocteurController::class, 'listTypeExamens']);
 });
+
+
 
 
 

@@ -1,0 +1,57 @@
+<div class="app-body">
+
+    <!-- Row starts -->
+    <div class="row gx-3">
+      <div class="col-sm-12">
+        <div class="card shadow-lg">
+            
+          <!-- src/app/demandes-medecin/demandes-medecin.component.html -->
+<div class="container">
+    <h2>Demandes de Rendez-vous</h2>
+  
+    <div *ngIf="demandes.length === 0">
+      <p>Aucune demande de rendez-vous.</p>
+    </div>
+  
+    <div *ngIf="demandes.length > 0">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Patient</th>
+            <th>Type</th>
+            <th>Date et Heure</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let demande of demandes">
+            <td>{{ demande.idRendezVous }}</td>
+            <td>{{ demande.patient.nom }}</td>
+            <td>{{ demande.type_rendez_vous.nom }}</td>
+            <td>{{ demande.dateHeure | date: 'short' }}</td>
+            <td>
+              <button
+                class="btn btn-success btn-sm me-2"
+                (click)="validerRendezVous(demande.idRendezVous)"
+              >
+                Valider
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="refuserRendezVous(demande.idRendezVous)"
+              >
+                Refuser
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+      </div>
+    </div>
+    <!-- Row ends -->
+
+  </div>

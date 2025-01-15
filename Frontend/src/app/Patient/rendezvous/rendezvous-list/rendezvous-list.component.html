@@ -1,0 +1,81 @@
+<div class="app-body">
+
+    <!-- Row starts -->
+    <div class="row gx-3">
+      <div class="col-sm-12">
+        <div class="card shadow-lg">
+            <div class="card-header d-flex align-items-center justify-content-between bg-primary text-white">
+              <h5 class="card-title mb-0">Liste de mes RDV</h5>
+              <a [routerLink]="['/rdv']" class="btn btn-light ms-auto">Retours</a>
+            </div>
+            <div class="card-body">
+                <div class="container mt-5">
+                    <h2 class="mb-3">Liste des Rendez-vous du patient</h2>
+                  
+                    <!-- Champ de recherche pour l'ID du patient -->
+                    <!-- <div class="mb-3">
+                      <label for="patientId" class="form-label">ID du Patient</label>
+                      <input
+                        type="number"
+                        id="patientId"
+                        [(ngModel)]="patientId"
+                        class="form-control"
+                        placeholder="Entrez l'ID du patient"
+                      />
+                      <button (click)="getRendezVousByPatient()" class="btn btn-primary mt-2">Rechercher</button>
+                    </div> -->
+                  
+                    <!-- Affichage des rendez-vous -->
+                    <div *ngIf="rendezvousList.length > 0">
+                      <table class="table table-bordered table-hover mt-4">
+                        <thead class="thead-light">
+                          <tr>
+                            <th>#</th>
+                            <th>Médecin</th>
+                            <th>Type</th>
+                            <th>Date & Heure</th>
+                            <th>Statut</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let rdv of rendezvousList; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ rdv.medecin.nom }}</td>
+                            <td>{{ rdv.type_rendez_vous.nom }}</td>
+                            <td>{{ rdv.dateHeure | date: 'dd/MM/yyyy HH:mm' }}</td>
+                            <!-- <td>{{ rdv.idStatutRendezVous === 1 ? 'Planifié' : 'Autre' }}</td> -->
+                            <td>
+                                {{
+                                  rdv.idStatutRendezVous === 1
+                                    ? 'En attente'
+                                    : rdv.idStatutRendezVous === 2
+                                    ? 'Payée'
+                                    : rdv.idStatutRendezVous === 3
+                                    ? 'Annulée'
+                                    : 'Inconnu'
+                                }}
+                              </td>
+                              
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  
+                    <div *ngIf="rendezvousList.length === 0">
+                      <p class="text-danger mt-3">Aucun rendez-vous trouvé pour ce patient.</p>
+                    </div>
+                  </div>
+            </div>
+          </div>
+          
+      </div>
+    </div>
+    <!-- Row ends -->
+
+  </div>
+
+
+
+
+
+  
