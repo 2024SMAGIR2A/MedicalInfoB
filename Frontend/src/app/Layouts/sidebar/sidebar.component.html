@@ -42,6 +42,9 @@
             <a href="doctor-dashboard.html">Doctors Dashboard</a>
           </li> -->
           <li>
+            <a [routerLink]="['/PatientList']">Liste Patient</a>
+          </li>
+          <li>
             <a [routerLink]="['/rdv/confirm']">RDV demandé</a>
           </li>
           <li>
@@ -76,11 +79,7 @@
           <span class="menu-text">Patients</span>
         </a>
         <ul class="treeview-menu">
-         
-          <li routerLinkActive="active current-page">
-            <a [routerLink]="['/rdv']">Rendez-vous</a>
-          </li>
-          <!-- <li>
+          <li>
             <a href="patient-dashboard.html">Patients Dashboard</a>
           </li>
           <li>
@@ -91,7 +90,7 @@
           </li>
           <li>
             <a href="edit-patient.html">Edit Patient Details</a>
-          </li> -->
+          </li>
         </ul>
       </li>
       <!-- <li class="treeview">

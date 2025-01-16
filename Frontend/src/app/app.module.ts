@@ -78,7 +78,7 @@ export function initServicesFactory(
     RendezvousListComponent,
     RendezvousdemandeComponent,
     RendezvousrejeteeComponent,
-    RendezvousaccepteeComponent
+    RendezvousaccepteeComponent,
     AddExamenComponent,
     // PatientCreateComponent,
     // PatientListComponent
