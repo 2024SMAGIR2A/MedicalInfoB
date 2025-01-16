@@ -1,6 +1,10 @@
 export class UserModel {
-  accessToken : string=''
-  email : string=''
-  password : string=''
-  TimeToEndSession : String=''
+  id: number = 0;
+  role: number = 0;
+  specialite: number = 0;
+  nom: string = '';
+  prenom: string = '';
+  email: string = '';
+  telephone: string = '';
+  TimeToEndSession: string = '';
 }

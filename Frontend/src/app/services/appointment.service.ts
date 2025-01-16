@@ -24,6 +24,7 @@ export interface BookingResponse {
   state: string;
   data: string;
   message: string;
+  errorDetail: string | null;
 }
 
 export interface BookingRequest {

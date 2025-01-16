@@ -32,6 +32,7 @@ class UtilisateurService {
                 ])
                 ->join('Utilisateur as u', 'cd.idUtilisateur', '=', 'u.idUtilisateur')
                 ->join('Specialite as s', 'u.idSpecialite', '=', 's.idSpecialite')
+                ->where('cd.isDeleted', 0)
                 ->where('cd.dateDebut', '>', now());
 
             // Apply filters if provided
@@ -54,7 +55,7 @@ class UtilisateurService {
                 return ApiResponse::return_success_response(
                     ApiResponse::NO_CONTENT,
                     [],
-                    204
+                    200
                 );
             }
 
@@ -108,6 +109,20 @@ class UtilisateurService {
                     return ApiResponse::return_error_response(
                         ApiResponse::BAD_REQUEST,
                         'Ce créneau n\'est plus disponible',
+                        400
+                    );
+                }
+
+                // check if patient has already a rendez-vous
+                $rendezVous = DB::table('RendezVous')
+                    ->where('idPatient', $data['patientId'])
+                    ->where('idStatutRendezVous', 1)
+                    ->first();
+
+                if ($rendezVous) {
+                    return ApiResponse::return_error_response(
+                        ApiResponse::BAD_REQUEST,
+                        'Le patient a déjà un rendez-vous',
                         400
                     );
                 }

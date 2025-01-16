@@ -136,67 +136,15 @@ export class RequesterService {
   }
 
 
-  async AsyncPostResponse(
-    targetapi : string, data : any,ShowLoader : boolean=false,AutoCloseLoader : boolean=false
-    , ShowSucessmessage : boolean=true,message : string="",headers : HttpHeaders= new HttpHeaders()
-    ,FromExternalApi : boolean=false
-    )
-  {
-    // Swal.close()
-    if(ShowLoader)
-    {
-      this.SweetAlertService.ShowLoader()
-    }
-    console.log(data)
-
-    var isOk=0;
-    var ReturnedResponse=[];
-    ReturnedResponse=await this.Subscriber(await this.Post(targetapi, data,headers),targetapi)
-
-    if(Array.isArray(ReturnedResponse))
-    {
-      ReturnedResponse[0]!=null && ReturnedResponse[0]!=false ? isOk=1 : isOk=0
-    }
-    else
-    {
-      ReturnedResponse!=null && ReturnedResponse!=false ? isOk=1 : isOk=0
-    }
-
-    if(this.ShowConsolelog())
-    {
-      console.log('Response',ReturnedResponse)
-      console.log(targetapi+'IsOk',isOk)
-    }
-
-    if(isOk)
-    {
-      if(ShowSucessmessage)
-      {
-
-        this.SweetAlertService.ShowSucessMessage('Succès!',message)
-        // await Swal.fire(
-        // // Swal.fire(
-        //     'Succès!',
-        //     message,
-        //     'success',
-        //   ).then(async (result) => {
-        //     if (result.isConfirmed) {
-        //       this.Confirmation=1
-        //       console.log('Confirmed')
-        //     }
-        //   })
-
-      }
-
-      if(AutoCloseLoader)
-      {
-        this.SweetAlertService.CloseLoader()
-        // Swal.close()
-      }
-    }
-
-    return [isOk,ReturnedResponse];
-
+  async AsyncPostResponse<T>(
+    route: string,
+    data: any,
+    isFormData: boolean,
+    isAuth: boolean,
+    isFile: boolean
+  ): Promise<T> {
+    const response = await this.Subscriber(await this.Post(route, data), route);
+    return response as T;
   }
 
   ShowConsolelog()

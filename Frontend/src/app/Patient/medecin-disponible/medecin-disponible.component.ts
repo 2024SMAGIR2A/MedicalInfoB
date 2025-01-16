@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TimeSlot } from '../../services/appointment.service';
 import { AppointmentService } from '../../services/appointment.service';
 
@@ -9,6 +10,7 @@ import { AppointmentService } from '../../services/appointment.service';
 })
 export class MedecinDisponibleComponent implements OnInit {
   timeSlots: TimeSlot[] = [];
+
   specialties = [
     { id: 1, name: 'Cardiologie' },
     { id: 2, name: 'Dermatologie' },
@@ -27,71 +29,85 @@ export class MedecinDisponibleComponent implements OnInit {
   patientId = 3;  // Default patient ID for testing
   bookedSlotId: number | null = null;  // Add this to track booked slot
 
-  constructor(private appointmentService: AppointmentService) {}
+  constructor(
+    private appointmentService: AppointmentService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     this.loadTimeSlots();
   }
 
-  loadTimeSlots() {
+  loadTimeSlots(): void {
     this.loading = true;
-    this.error = null;
-
     const filters: { specialite?: number, date?: string } = {};
+
     if (this.selectedSpecialty) {
       filters.specialite = this.selectedSpecialty;
     }
     if (this.selectedDate) {
-      filters.date = this.selectedDate.toISOString().split('T')[0];
+      // Format date as YYYY-MM-DD
+      const date = new Date(this.selectedDate);
+      filters.date = date.toISOString().slice(0, 10);
+      console.log('Date filter:', filters.date); // Debug log
     }
 
     this.appointmentService.getAvailableTimeSlots(filters).subscribe({
       next: (response) => {
+        console.log('API Response:', response); // Debug log
         this.timeSlots = response.data;
         this.loading = false;
       },
       error: (error) => {
-        this.error = 'Erreur lors du chargement des créneaux disponibles';
+        console.error('API Error:', error); // Debug log
+        this.snackBar.open(
+          'Erreur lors du chargement des créneaux disponibles',
+          'Fermer',
+          {
+            duration: 3000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            panelClass: ['error-snackbar']
+          }
+        );
         this.loading = false;
-        console.error('Error loading time slots:', error);
       }
     });
   }
 
   // Add filter change handlers
   onFilterChange() {
+    console.log('Date selected:', this.selectedDate); // Debug log
     this.loadTimeSlots();
   }
 
-  bookAppointment(timeSlotId: number) {
-    this.bookingInProgress = true;
-    this.currentBookingId = timeSlotId;
-    this.bookingError = null;
-    this.bookingSuccess = null;
+  bookAppointment(slot: TimeSlot): void {
+    const patientId = 3; // Replace with actual patient ID
 
-    this.appointmentService.bookTimeSlot(timeSlotId, this.patientId).subscribe({
+    this.appointmentService.bookTimeSlot(slot.id, patientId).subscribe({
       next: (response) => {
         if (response.state === 'success') {
-          this.bookingSuccess = response.data;
-          this.bookedSlotId = timeSlotId;  // Save the booked slot ID
+          this.bookedSlotId = slot.id;
+          this.snackBar.open('Rendez-vous réservé avec succès', 'Fermer', {
+            duration: 3000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            panelClass: ['success-snackbar']
+          });
           this.loadTimeSlots();
-        } else {
-          this.bookingError = response.message;
-        }
-        this.bookingInProgress = false;
-        this.currentBookingId = null;
-
-        if (this.bookingSuccess) {
-          setTimeout(() => {
-            this.bookingSuccess = null;
-          }, 3000);
         }
       },
-      error: (error) => {
-        this.bookingError = 'Erreur lors de la réservation du rendez-vous';
-        this.bookingInProgress = false;
-        this.currentBookingId = null;
-        console.error('Error booking appointment:', error);
+      error: (errorResponse) => {
+        this.snackBar.open(
+          errorResponse.error.errorDetail || errorResponse.error.message,
+          'Fermer',
+          {
+            duration: 3000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            panelClass: ['error-snackbar']
+          }
+        );
       }
     });
   }

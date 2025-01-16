@@ -38,6 +38,9 @@ Route::prefix('user')->group(function () {
 
     // Patient
     Route::post('patient/choose-time-slot', action: [PatientController::class, 'chooseTimeSlot']);
+    Route::get('patient/choosed-time-slot', action: [PatientController::class, 'choosedTimeSlot']);
+
+
     Route::post('patient/ask-for-appointment', action: [PatientController::class, 'askForAppointment']);
 
     Route::post('/rendezvous', [RendezVousController::class, 'store']);

@@ -10,7 +10,12 @@
       </select>
     </div>
     <div class="col-md-6">
-      <input type="date" class="form-control" [(ngModel)]="selectedDate" (ngModelChange)="onFilterChange()">
+      <input
+        type="date"
+        class="form-control"
+        [(ngModel)]="selectedDate"
+        (ngModelChange)="onFilterChange()"
+        [ngModel]="selectedDate | date:'yyyy-MM-dd'">
     </div>
   </div>
 
@@ -29,21 +34,21 @@
                   [ngClass]="{
                     'btn-primary': !bookedSlotId,
                     'btn-success': slot.id === bookedSlotId,
-                    'btn-secondary': bookedSlotId && slot.id !== bookedSlotId
+                    'btn-disabled': slot.id === bookedSlotId
                   }"
-                  (click)="bookAppointment(slot.id)"
-                  [disabled]="bookingInProgress && currentBookingId === slot.id || bookedSlotId !== null">
-            <span *ngIf="slot.id === bookedSlotId">
-              <i class="fas fa-check"></i> Réservé
-            </span>
-            <span *ngIf="!(bookingInProgress && currentBookingId === slot.id) && slot.id !== bookedSlotId">
-              Prendre rendez-vous
-            </span>
-            <span *ngIf="bookingInProgress && currentBookingId === slot.id" class="spinner-border spinner-border-sm" role="status">
-              <span class="visually-hidden">Chargement...</span>
-            </span>
+                  (click)="bookAppointment(slot)"
+                  [disabled]="slot.id === bookedSlotId">
+            {{ slot.id === bookedSlotId ? 'Réservé' : 'Réserver' }}
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Show this when no time slots are available -->
+    <div class="col-12 text-center" *ngIf="timeSlots.length === 0 && !loading">
+      <div class="alert alert-info">
+        <i class="ri-information-line me-2"></i>
+        Pas de créneaux disponibles
       </div>
     </div>
   </div>

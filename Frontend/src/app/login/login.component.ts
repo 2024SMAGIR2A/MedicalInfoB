@@ -1,54 +1,64 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RequesterService } from '../Services/requester.service';
-import { EnumEndpoints } from '../Enum/enum-endpoints';
-import { Router } from '@angular/router';
 import { SecurityService } from '../Services/security.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-
-  UserFormGroup! : FormGroup
+export class LoginComponent implements OnInit {
+  UserFormGroup!: FormGroup;
+  loading = false;
 
   constructor(
-    private FormBuilder : FormBuilder,
-    private SecurityService : SecurityService,
-    // private RequesterService : RequesterService,
-    private Router : Router
+    private FormBuilder: FormBuilder,
+    private SecurityService: SecurityService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
     this.InitFormGroup();
-
-    this.SecurityService.CheckAuth() ? this.Router.navigateByUrl('DashboardMedecin') : null
-
+    if (this.SecurityService.CheckAuth()) {
+      this.SecurityService.navigate('DashboardMedecin');
+    }
   }
 
-
-  InitFormGroup()
-  {
-    this.UserFormGroup=this.FormBuilder.group(
-      {
-        email : ['', Validators.required],
-        password : ['', Validators.required],
-      }
-    )
-
+  InitFormGroup() {
+    this.UserFormGroup = this.FormBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
   }
 
-  Login()
-  {
+  async Login() {
+    if (this.UserFormGroup.invalid) {
+      this.snackBar.open('Please fill all required fields', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+        panelClass: ['error-snackbar']
+      });
+      return;
+    }
 
-    this.SecurityService.Login(this.UserFormGroup.value)
-    // var ReturnedResponse =await this.RequesterService.AsyncPostResponse(EnumEndpoints.Authentication,this.UserFormGroup.value,false,true,false)
-    // ReturnedResponse[0]== 1 ? this.Router.navigateByUrl('DashboardMedecin') : null
-    // console.log('ISOK',ReturnedResponse[0])
+    this.loading = true;
+    try {
+      await this.SecurityService.Login(this.UserFormGroup.value);
+    } catch (error: any) {
+      this.snackBar.open(
+        error.message || 'Login failed',
+        'Close',
+        {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar']
+        }
+      );
+    } finally {
+      this.loading = false;
+    }
   }
-
 }

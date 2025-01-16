@@ -4,6 +4,22 @@ import { EnumEndpoints } from '../Enum/enum-endpoints';
 import { Router } from '@angular/router';
 import { UserModel } from '../Models/user-model.model';
 
+interface LoginResponse {
+  state: string;
+  data: {
+    user: {
+      idUtilisateur: number;
+      idRole: number;
+      idSpecialite: number;
+      nom: string;
+      prenom: string;
+      email: string;
+      telephone: string;
+    };
+  };
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -82,32 +98,51 @@ export class SecurityService {
         return StayConnect
     }
 
-  async Login(User : UserModel)
-  {
-    // var ReturnedResponse =await this.RequesterService.AsyncPostResponse(EnumEndpoints.Authentication,User,false,true,false)
-    var ReturnedResponse :any=[]
-    // if(ReturnedResponse[0]== 1)
-      if(true)
-    {
-      this.RequesterService.Showlog('ISOK',ReturnedResponse[0])
-      // User.accessToken=ReturnedResponse[0].data.accessToken
-      User.TimeToEndSession=new Date().getTime().toString()
+  async Login(credentials: { email: string; password: string }) {
+    try {
+      const response = await this.RequesterService.AsyncPostResponse<LoginResponse>(
+        'http://127.0.0.1:8000/api/auth/login',
+        credentials,
+        false,
+        true,
+        false
+      );
 
-      // this.SessionManger(User)
-      localStorage.removeItem('CurrentUser')
-      localStorage.setItem('CurrentUser', JSON.stringify(User))
+      if (response && response.state === 'success') {
+        const user = new UserModel();
+        user.email = credentials.email;
+        user.id = response.data.user.idUtilisateur;
+        user.role = response.data.user.idRole;
+        user.nom = response.data.user.nom;
+        user.prenom = response.data.user.prenom;
+        user.specialite = response.data.user.idSpecialite;
+        user.TimeToEndSession = new Date().getTime().toString();
 
-    this.Router.navigateByUrl('DashboardMedecin')
+        localStorage.removeItem('CurrentUser');
+        localStorage.setItem('CurrentUser', JSON.stringify(user));
+
+        // Navigate based on role
+        if (user.role === 1) { // Assuming 1 is for doctors
+          this.Router.navigateByUrl('DashboardMedecin');
+        } else {
+          this.Router.navigateByUrl('patient/medecin-disponible');
+        }
+      } else {
+        throw new Error(response.message || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
     }
-
-    // console.log('ISOK',ReturnedResponse[0])
   }
 
-  Logout()
-  {
-    localStorage.removeItem('CurrentUser')
-    this.Router.navigateByUrl('')
+  Logout() {
+    localStorage.clear();  // Clear all localStorage
+    this.navigate('');    // Navigate to login page
   }
 
+  public navigate(path: string): void {
+    this.Router.navigateByUrl(path);
+  }
 
 }

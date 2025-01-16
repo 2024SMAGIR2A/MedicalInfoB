@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule, Routes } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
-import { registerLocaleData } from '@angular/common';
+import {  registerLocaleData } from '@angular/common';
 
 import localeFr from '@angular/common/locales/fr';
 import { ConfigurationService } from './Services/configuration.service';
@@ -22,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Components
 import { AppComponent } from './app.component';
@@ -41,6 +41,7 @@ import { RendezvousaccepteeComponent } from './Medecin/rendezvousdemande/rendezv
 import { RendezvousrejeteeComponent } from './Medecin/rendezvousdemande/rendezvousrejetee/rendezvousrejetee.component';
 import { DashboardMedecinComponent } from './Medecin/dashboard-medecin/dashboard-medecin.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { Routes } from '@angular/router';
 // import { PatientCreateComponent } from './patient/patient-create/patient-create.component';
 // import { PatientListComponent } from './patient/patient-list/patient-list.component';
 
@@ -60,6 +61,11 @@ const appRoutes: Routes = [
   { path: 'rdv/confirm', component: RendezvousdemandeComponent },
   { path: 'rdv/accepte', component: RendezvousaccepteeComponent },
   { path: 'rdv/refuse', component: RendezvousrejeteeComponent },
+
+  {
+    path: '/patient/medecin-disponible',
+    component: MedecinDisponibleComponent
+  },
 
 
   {path: '', redirectTo: 'Login', pathMatch:"prefix" },
@@ -117,7 +123,8 @@ export function initServicesFactory(
     MatProgressBarModule,
     BrowserAnimationsModule,
     NgxSpinnerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSnackBarModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }  // For French date format
